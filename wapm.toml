@@ -1,0 +1,19 @@
+[package]
+name = "amscotti/keyboard_madness_runner"
+version = "0.1.1"
+description = "Keyboard Madness Runnerr"
+license = "MIT"
+readme = "README.md"
+repository = "https://github.com/amscotti/keyboard_madness_runner"
+
+[[module]]
+name = "keyboard_madness_runner"
+source = "target/wasm32-wasi/release/keyboard_madness_runner.wasm"
+abi = "wasi"
+
+[module.interfaces]
+wasi = "0.1.0-unstable"
+
+[[command]]
+name = "keyboard_madness_runner"
+module = "keyboard_madness_runner"

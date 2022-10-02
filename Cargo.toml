@@ -1,0 +1,19 @@
+[package]
+name = "keyboard_madness"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+clap = { version = "4.0.8", features = ["derive"] }
+lazy_static = "1.4.0"
+regex = "1.6.0"
+
+[lib]
+name = "keyboard_madness"
+path = "src/lib.rs"
+
+[[bin]]
+name = "keyboard_madness_runner"
+path = "src/bin/keyboard_madness_runner.rs"
