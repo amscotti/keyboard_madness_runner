@@ -34,24 +34,22 @@ Run `cargo run R,S,U,L:3,S,D,R:6,S,S,U,S`
 ## Usage
 
 ```
-Simple program for execute instruction for positional typing on a keyboard
+Usage: keyboard_madness_runner <COMMAND>
 
-Usage: keyboard_madness_runner [OPTIONS] [INSTRUCTIONS]
-
-Arguments:
-  [INSTRUCTIONS]  Instructions to execute [default: R,S,U,L:3,S,D,R:6,S,S,U,S]
+Commands:
+  run       Run instructions on the keyboard
+  generate  Generate instructions
+  help      Print this message or the help of the given subcommand(s)
 
 Options:
-  -x <X_POSITION>      X starting position on the keyboard [default: 4]
-  -y <Y_POSITION>      Y starting position on the keyboard [default: 2]
-  -h, --help           Print help information
-  -V, --version        Print version information
+  -h, --help     Print help
+  -V, --version  Print version
 ```
 
 ## Building
 * Run `cargo build --release`
-* Run with `./target/release/keyboard_madness_runner R,S,U,L:3,S,D,R:6,S,S,U,S`
+* Run with `./target/release/keyboard_madness_runner run R,S,U,L:3,S,D,R:6,S,S,U,S`
 
 ### Build docker image and use local image
 * Build with `docker build . -t keyboard-madness-runner`
-* Run with `docker run keyboard-madness-runner R,S,U,L:3,S,D,R:6,S,S,U,S`
+* Run with `docker run keyboard-madness-runner run R,S,U,L:3,S,D,R:6,S,S,U,S`
