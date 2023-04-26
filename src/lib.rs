@@ -1,9 +1,16 @@
-use lazy_static::lazy_static;
-use regex::Regex;
 use std::{
     collections::HashMap,
     fmt,
     ops::{Add, Sub},
+};
+
+use nom::{
+    branch::alt,
+    bytes::complete::tag,
+    character::complete::digit1,
+    combinator::{map, opt},
+    sequence::{tuple, preceded},
+    IResult,
 };
 
 type Position = (usize, usize);
@@ -29,29 +36,44 @@ enum Instruction {
 
 impl From<&str> for Instruction {
     fn from(s: &str) -> Self {
-        lazy_static! {
-            static ref RE: Regex =
-                Regex::new(r"^(?P<instruction>L|R|U|D|S|_|N)(:(?P<count>\d*))?$").unwrap();
+        match parse_instruction(s) {
+            Ok((_, inst)) => inst,
+            Err(_) => Instruction::Unknown,
         }
-
-        RE.captures(s).map_or(Instruction::Unknown, |caps| {
-            let instruction = caps.name("instruction").map_or("", |m| m.as_str());
-            let count = caps
-                .name("count")
-                .map_or(1, |m| m.as_str().parse().unwrap_or(1));
-
-            match instruction {
-                "L" => Instruction::Left(count),
-                "R" => Instruction::Right(count),
-                "U" => Instruction::Up(count),
-                "D" => Instruction::Down(count),
-                "_" => Instruction::Space,
-                "N" => Instruction::NewLine,
-                "S" => Instruction::Select,
-                _ => Instruction::Unknown,
-            }
-        })
     }
+}
+
+fn parse_instruction(input: &str) -> IResult<&str, Instruction> {
+    let (input, (instruction, count)) = tuple((
+        alt((
+            tag("L"),
+            tag("R"),
+            tag("U"),
+            tag("D"),
+            tag("S"),
+            tag("_"),
+            tag("N"),
+        )),
+        opt(preceded(
+            tag(":"),
+            map(digit1, |count: &str| count.parse::<usize>().unwrap()),
+        )),
+    ))(input)?;
+
+    let count = count.unwrap_or(1);
+
+    let instruction = match instruction {
+        "L" => Instruction::Left(count),
+        "R" => Instruction::Right(count),
+        "U" => Instruction::Up(count),
+        "D" => Instruction::Down(count),
+        "_" => Instruction::Space,
+        "N" => Instruction::NewLine,
+        "S" => Instruction::Select,
+        _ => unreachable!(),
+    };
+
+    Ok((input, instruction))
 }
 
 pub struct Keyboard<'a> {

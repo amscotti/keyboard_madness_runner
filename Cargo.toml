@@ -7,8 +7,7 @@ edition = "2021"
 
 [dependencies]
 clap = { version = "4.0.8", features = ["derive"] }
-lazy_static = "1.4.0"
-regex = "1.6.0"
+nom = "7.1.0"
 
 [lib]
 name = "keyboard_madness"
